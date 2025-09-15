@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple POST Example</title>
+</head>
+
+<body>
+    <h2>Submit Data to API</h2>
+    <input type="text" id="userInput" placeholder="Enter something" />
+    <button onclick="submitData()">Submit</button>
+
+    <h3>Response:</h3>
+    <pre id="responseOutput"></pre>
+
+    <script>
+        function submitData() {
+            const input = document.getElementById('userInput').value;
+
+            fetch('http://127.0.0.1:5000/response', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ input: input })
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                document.getElementById('responseOutput').textContent = JSON.stringify(data, null, 2);
+            })
+            .catch(error => {
+                document.getElementById('responseOutput').textContent = `Error: ${error}`;
+            });
+        }
+    </script>
+</body>
+
+</html>
